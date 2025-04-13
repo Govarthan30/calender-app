@@ -163,7 +163,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 👨‍💻 **Govarthan**
 
 - LinkedIn: [Govarthan](https://www.linkedin.com/in/govarthan-v)
-- Portfolio: [[govarthan.com](https://govarthan.netlify.app/)](https://govarthan.netlify.app/)
+- Portfolio: [[govarthan](https://govarthan.netlify.app/)]
 
 ## Acknowledgments
 
