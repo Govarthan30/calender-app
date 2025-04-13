@@ -8,7 +8,7 @@ app.use(cors());
 app.use(express.json());
 
 // === CONNECT TO MONGODB ===
-mongoose.connect('mongodb://localhost:27017/calendarApp', {
+mongoose.connect('mongodb+srv://gova:Gova%4012345@cluster0.jrzuz.mongodb.net/?retryWrites=true&w=majority', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });

@@ -42,7 +42,7 @@ A modern, interactive calendar application built with React, Redux, and FullCale
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/govarthan/calendar-app.git
+git clone https://github.com/Govarthan30/calendar-app.git
 cd calendar-app
 ```
 
@@ -59,9 +59,10 @@ npm install
 
 3. Create a `.env` file in the backend directory:
 ```env
-MONGODB_URI=mongodb://localhost:27017/calendar-app
+MONGODB_URI=mongodb+srv://gova:Gova%4012345@cluster0.jrzuz.mongodb.net/?retryWrites=true&w=majority
 PORT=5000
 ```
+```ALL data are stored in cluster in test collection```
 
 4. Start the development servers:
 
@@ -76,7 +77,7 @@ npm start
 ```
 
 The application will be available at:
-- Frontend: http://localhost:3000
+- Frontend: http://localhost:5173
 - Backend: http://localhost:5000
 
 ## Project Structure
@@ -161,8 +162,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 👨‍💻 **Govarthan**
 
-- LinkedIn: [Govarthan](https://www.linkedin.com/in/govarthan)
-- Portfolio: [govarthan.com](https://govarthan.com)
+- LinkedIn: [Govarthan](https://www.linkedin.com/in/govarthan-v)
+- Portfolio: [govarthan.com](https://govarthan.netfily.app)
 
 ## Acknowledgments
 
