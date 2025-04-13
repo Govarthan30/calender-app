@@ -42,36 +42,78 @@ const Goal = mongoose.model('Goal', goalSchema);
 
 // Events
 app.get('/events', async (req, res) => {
-  const events = await Event.find();
-  res.json(events);
+  try {
+    const events = await Event.find();
+    res.json(events);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching events' });
+  }
 });
 
 app.post('/events', async (req, res) => {
-  const newEvent = new Event(req.body);
-  const saved = await newEvent.save();
-  res.json(saved);
+  try {
+    const newEvent = new Event(req.body);
+    const saved = await newEvent.save();
+    res.json(saved);
+  } catch (error) {
+    res.status(500).json({ message: 'Error creating event' });
+  }
 });
 
 app.put('/events/:id', async (req, res) => {
-  const updated = await Event.findByIdAndUpdate(req.params.id, req.body, { new: true });
-  res.json(updated);
+  try {
+    const updated = await Event.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!updated) {
+      return res.status(404).json({ message: 'Event not found' });
+    }
+    res.json(updated);
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating event' });
+  }
 });
 
 app.delete('/events/:id', async (req, res) => {
-  await Event.findByIdAndDelete(req.params.id);
-  res.json({ message: 'Event deleted' });
+  try {
+    const deletedEvent = await Event.findByIdAndDelete(req.params.id);
+    if (!deletedEvent) {
+      return res.status(404).json({ message: 'Event not found' });
+    }
+    res.json({ message: 'Event deleted successfully', deletedEvent });
+  } catch (error) {
+    res.status(500).json({ message: 'Error deleting event' });
+  }
 });
 
 // Goals & Tasks
 app.get('/goals', async (req, res) => {
-  const goals = await Goal.find();
-  res.json(goals);
+  try {
+    const goals = await Goal.find();
+    res.json(goals);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching goals' });
+  }
 });
 
 app.post('/goals', async (req, res) => {
-  const newGoal = new Goal(req.body);
-  const saved = await newGoal.save();
-  res.json(saved);
+  try {
+    const newGoal = new Goal(req.body);
+    const saved = await newGoal.save();
+    res.json(saved);
+  } catch (error) {
+    res.status(500).json({ message: 'Error creating goal' });
+  }
+});
+
+app.delete('/goals/:id', async (req, res) => {
+  try {
+    const deletedGoal = await Goal.findByIdAndDelete(req.params.id);
+    if (!deletedGoal) {
+      return res.status(404).json({ message: 'Goal not found' });
+    }
+    res.json({ message: 'Goal deleted successfully', deletedGoal });
+  } catch (error) {
+    res.status(500).json({ message: 'Error deleting goal' });
+  }
 });
 
 // === START SERVER ===

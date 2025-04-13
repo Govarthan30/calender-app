@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { Goal } from '../../types';
 
@@ -14,6 +14,11 @@ export const addGoal = createAsyncThunk('goals/addGoal', async (goal: Goal) => {
   return res.data;
 });
 
+export const deleteGoal = createAsyncThunk('goals/deleteGoal', async (id: string) => {
+  const res = await axios.delete(`${baseURL}/goals/${id}`);
+  return res.data.deletedGoal._id;
+});
+
 const goalsSlice = createSlice({
   name: 'goals',
   initialState: [] as Goal[],
@@ -23,6 +28,9 @@ const goalsSlice = createSlice({
       .addCase(fetchGoals.fulfilled, (_, action) => action.payload)
       .addCase(addGoal.fulfilled, (state, action) => {
         state.push(action.payload);
+      })
+      .addCase(deleteGoal.fulfilled, (state, action) => {
+        return state.filter(goal => goal._id !== action.payload);
       });
   },
 });

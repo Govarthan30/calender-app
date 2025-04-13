@@ -1,44 +1,114 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { addEvent } from '../features/events/eventsSlice';
 import { AppDispatch } from '../app/store';
+import { addEvent } from '../features/events/eventsSlice';
 import { EventItem } from '../types';
+import Modal from './Modal';
 
-export default function AddEventForm() {
+interface AddEventFormProps {
+  isOpen: boolean;
+  onClose: () => void;
+  defaultDate?: string;
+}
+
+export default function AddEventForm({ isOpen, onClose, defaultDate }: AddEventFormProps) {
   const dispatch = useDispatch<AppDispatch>();
-  const [form, setForm] = useState<EventItem>({
+  const [formData, setFormData] = useState<Partial<EventItem>>({
     title: '',
     category: 'work',
-    start: '',
-    end: '',
-    color: '#000000',
+    start: defaultDate || new Date().toISOString(),
+    end: new Date(new Date().getTime() + 60 * 60000).toISOString(),
+    color: '#4f46e5',
   });
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(addEvent(form));
-    setForm({ title: '', category: 'work', start: '', end: '', color: '#000000' });
+    if (formData.title && formData.start && formData.end) {
+      dispatch(addEvent(formData as EventItem));
+      onClose();
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input name="title" placeholder="Title" value={form.title} onChange={handleChange} required />
-      <select name="category" value={form.category} onChange={handleChange}>
-        <option value="work">Work</option>
-        <option value="exercise">Exercise</option>
-        <option value="eating">Eating</option>
-        <option value="relax">Relax</option>
-        <option value="family">Family</option>
-        <option value="social">Social</option>
-      </select>
-      <input type="datetime-local" name="start" value={form.start} onChange={handleChange} required />
-      <input type="datetime-local" name="end" value={form.end} onChange={handleChange} required />
-      <input type="color" name="color" value={form.color} onChange={handleChange} />
-      <button type="submit">Add Event</button>
-    </form>
+    <Modal isOpen={isOpen} onClose={onClose} title="Add New Event">
+      <form onSubmit={handleSubmit} className="event-form">
+        <div className="form-group">
+          <label htmlFor="title">Event Title</label>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            value={formData.title}
+            onChange={handleChange}
+            placeholder="Enter event title"
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="category">Category</label>
+          <select
+            id="category"
+            name="category"
+            value={formData.category}
+            onChange={handleChange}
+          >
+            <option value="work">Work</option>
+            <option value="personal">Personal</option>
+            <option value="meeting">Meeting</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="start">Start Time</label>
+          <input
+            type="datetime-local"
+            id="start"
+            name="start"
+            value={formData.start?.slice(0, 16)}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="end">End Time</label>
+          <input
+            type="datetime-local"
+            id="end"
+            name="end"
+            value={formData.end?.slice(0, 16)}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="color">Color</label>
+          <input
+            type="color"
+            id="color"
+            name="color"
+            value={formData.color}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="form-actions">
+          <button type="button" className="button-secondary" onClick={onClose}>
+            Cancel
+          </button>
+          <button type="submit" className="button">
+            Add Event
+          </button>
+        </div>
+      </form>
+    </Modal>
   );
 }
