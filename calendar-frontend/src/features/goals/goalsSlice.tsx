@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { Goal } from '../../types';
 
-const baseURL = 'http://localhost:5000';
+const baseURL = 'https://calender-app-9a73.onrender.com';
 
 export const fetchGoals = createAsyncThunk('goals/fetchGoals', async () => {
   const res = await axios.get<Goal[]>(`${baseURL}/goals`);
